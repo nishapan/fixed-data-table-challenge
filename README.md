@@ -6,5 +6,6 @@ The entire project is hosted on Heroku:
 https://cryptic-cliffs-56169.herokuapp.com
 
 the html entry point is: public/index.html
+```sh
 the js for fixed-data-table logic is in: public/scripts/fdt.js
 
