@@ -14,9 +14,12 @@ var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+
 var app = express();
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json');
+var ADS_FILE = path.join(__dirname, 'ads.json');
+var METRICS_FILE = path.join(__dirname, 'ads_metrics.json');
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -33,6 +36,26 @@ app.use(function(req, res, next) {
     // Disable caching so we'll always get the latest comments.
     res.setHeader('Cache-Control', 'no-cache');
     next();
+});
+
+app.get('/api/ads', function(req, res) {
+  fs.readFile(ADS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    res.json(JSON.parse(data));
+  });
+});
+
+app.get('/api/metrics', function(req, res) {
+  fs.readFile(METRICS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    res.json(JSON.parse(data));
+  });
 });
 
 app.get('/api/comments', function(req, res) {
@@ -75,3 +98,5 @@ app.post('/api/comments', function(req, res) {
 app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
+
+
